@@ -1,0 +1,48 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: filipes-pod-nginx #10.2.2.86
+  labels:
+    app: filipes-app
+spec:
+  containers:
+    - name: filipes-container
+      image: nginx:latest
+---
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: filipes-pod-apache #10.2.2.235 
+  labels:
+    app: filipes-app
+spec:
+  containers:
+    - name: filipes-container
+      image: httpd:latest
+
+---
+
+apiVersion: v1
+kind: Endpoints
+metadata:
+  name: filipes-svc #services and endpoints must have the same name for proper association
+subsets:
+  - addresses:
+      - ip: 10.2.2.235   #NGINX
+      - ip: 10.2.2.86 #APACHE
+    ports:
+      - port: 80
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: filipes-svc #same name as endpoints for proper association
+spec:
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+ 

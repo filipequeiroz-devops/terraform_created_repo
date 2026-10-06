@@ -1,0 +1,35 @@
+#IN this scenario, an and endpoint slice is created for each pod, and the service uses a selector to select the pods based on their labels. The service will then route traffic to the pods that match the selector criteria.
+apiVersion: v1
+kind: Pod
+metadata:
+  name: endpoint-slice-nginx-pod #10.2.2.67 
+  labels:
+    env: prod
+spec:
+  containers:
+    - name: endpoint-slices-container
+      image: nginx:latest
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: endpoint-slices-apache-pod #10.2.2.208
+  labels:
+    env: prod
+spec:
+  containers:
+    - name: endpoint-slices-container
+      image: httpd:latest
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: filipes-svc-enddpointslice 
+spec:
+  selector:
+    env: prod #Selector uses label flag to select pods
+  ports:
+    - name: http
+      port: 80
