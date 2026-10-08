@@ -30,4 +30,7 @@ override.tf.json
 terraform.rc
 
 # Lock file is generally committed for provider dependency consistency
-# .terraform.lock.hcl
+.terraform.lock.hcl
+
+# Folder used for trying out the modules recently created
+modulestest/
