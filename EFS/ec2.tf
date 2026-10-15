@@ -1,11 +1,11 @@
 #AMI
 data "aws_ami" "example" {
   most_recent = true
-  owners      = ["amazon"]
+  owners      = ["ubuntu"]
 
   filter {
     name   = "name"
-    values = ["amzn2-ami-hvm-*-x86_64-gp2"]
+    values = ["ubuntu/images/ubuntu-20.04-*"]
   }
 }
 
