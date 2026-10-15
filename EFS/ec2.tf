@@ -53,7 +53,20 @@ resource "aws_instance" "example" {
     apt-get update -y
     apt-get install -y nfs-common
     mkdir -p /mnt/efs
-    mount -t nfs4 -o nfsvers=4.1 ${aws_efs_file_system.example.dns_name}:/ /mnt/efs
+    
+    EFS_HOST="${aws_efs_file_system.example.dns_name}"
+
+  # Waiting DNS resolution for EFS hostname
+  until getent hosts "$EFS_HOST" > /dev/null 2>&1; do
+    echo "Waiting for DNS resolution for $EFS_HOST..."
+    sleep 5
+  done
+
+  # Tries to mount the EFS filesystem until it succeeds
+  until mount -t nfs4 -o nfsvers=4.1,rsize=1048576,wsize=1048576,hard,timeo=600,retrans=2,noresvport "$EFS_HOST":/ /mnt/efs; do
+    echo "Waiting for EFS mount..."
+    sleep 5
+  done
   EOF
 
   tags = {
