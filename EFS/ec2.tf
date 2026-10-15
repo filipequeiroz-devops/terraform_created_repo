@@ -1,5 +1,5 @@
 #AMI
-data "aws_ami" "ubuntu_20_04" {
+data "aws_ami" "ubuntu" {
   most_recent = true
   owners      = ["099720109477"] # Canonical oficial
 
@@ -41,7 +41,7 @@ data "aws_security_group" "default" {
 }
 
 resource "aws_instance" "example" {
-  ami           = data.aws_ami.example.id
+  ami           = data.aws_ami.ubuntu.id
   instance_type = "t3.micro"
   subnet_id     = data.aws_subnets.default.ids[0]
   count         = var.instance_count
