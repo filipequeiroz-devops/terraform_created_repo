@@ -50,14 +50,14 @@ resource "aws_instance" "example" {
   #Mount EFS on EC2 instance
   user_data = <<-EOF
     #!/bin/bash
-    yum update -y
-    yum install -y nfs-common
+    apt-get update -y
+    apt-get install -y nfs-common
     mkdir -p /mnt/efs
     mount -t nfs4 -o nfsvers=4.1 ${aws_efs_file_system.example.dns_name}:/ /mnt/efs
   EOF
 
   tags = {
-    Name = "example-instance"
+    Name = "example-instance-${count.index + 1}"
   }
 }
 
