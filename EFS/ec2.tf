@@ -49,12 +49,12 @@ resource "aws_instance" "example" {
 
   #Mount EFS on EC2 instance
   user_data = <<-EOF
-    #!/bin/bash
-    apt-get update -y
-    apt-get install -y nfs-common
-    mkdir -p /mnt/efs
-    
-    EFS_HOST="${aws_efs_file_system.example.dns_name}"
+  #!/bin/bash
+  apt-get update -y
+  apt-get install -y nfs-common
+  mkdir -p /mnt/efs
+  
+  EFS_HOST="${aws_efs_file_system.example.dns_name}"
 
   # Waiting DNS resolution for EFS hostname
   until getent hosts "$EFS_HOST" > /dev/null 2>&1; do
